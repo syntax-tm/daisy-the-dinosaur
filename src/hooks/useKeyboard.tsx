@@ -15,12 +15,16 @@ export interface KeyPressAction {
     onKeyPress: KeyEventHandler;
 }
 
+export interface KeyboardInput extends Map<string, KeyPressAction> {
+
+}
+
 export interface KeyboardOutput {
     onKeyUp: (e: KeyboardEvent) => void;
     onKeyDown: (e: KeyboardEvent) => void;
 }
 
-export const useKeyboard = ({ actions }: { actions: Map<string, KeyPressAction> }): KeyboardOutput => {
+export const useKeyboard = (actions: KeyboardInput ): KeyboardOutput => {
   const [keysDown, setKeysDown] = useState<string[]>([]);
   const { isInput } = useActiveElement();
 
