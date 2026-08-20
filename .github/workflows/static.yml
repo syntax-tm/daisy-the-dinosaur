@@ -80,8 +80,8 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
 
       # TODO: remove this once there's a reliable way to call it during the build process
-      - name: Prebuild
-        run: ${{ steps.detect-package-manager.outputs.runner }} run prebuild
+      # - name: Prebuild
+      #   run: ${{ steps.detect-package-manager.outputs.runner }} run prebuild
 
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
