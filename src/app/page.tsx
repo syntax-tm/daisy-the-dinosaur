@@ -23,7 +23,7 @@ export default function Home() {
       <CssBaseline />
       <div className="home absolute left-0 top-0 h-full w-full">
         <div className="">
-          <PdfViewer file="docs/Daisy the Dino's Day Away v1.0-a.pdf" />
+          <PdfViewer file="https://raw.githubusercontent.com/syntax-tm/daisy-the-dinosaur/3182c0723dc1f54ef7c7468d8d3eb4a6263dfde9/public/docs/Daisy%20the%20Dino's%20Day%20Away%20v1.0-a.pdf" />
         </div>
       </div>
     </ThemeProvider>
