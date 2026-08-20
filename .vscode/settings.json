@@ -1,0 +1,19 @@
+{
+  "[json]": {
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.suggest.insertMode": "replace",
+    "editor.trimAutoWhitespace": true,
+    "editor.indentSize": 2,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "search.exclude": {
+    "**/.yarn": true,
+    "**/.pnp.*": true
+  },
+  "eslint.nodePath": ".yarn/sdks",
+  "js/ts.tsdk.path": ".yarn/sdks/typescript/lib",
+  "js/ts.tsdk.enablePromptUseWorkspaceTsdk": true
+}
