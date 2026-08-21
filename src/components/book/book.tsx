@@ -1,16 +1,18 @@
 'use client';
 
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useMemo, useRef, useState } from 'react';
 // import { Document, Page, pdfjs } from 'react-pdf';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 import { Pagination, Card, CardHeader, Avatar, Paper } from '@mui/material';
 import { useWindowSize } from '@uidotdev/usehooks';
 import { KeyPressAction, useKeyboard } from '@hooks/useKeyboard';
 import { ReactFlipBook } from '@vuvandinh203/react-flipbook';
+import { ReactFlipBookRef } from '@vuvandinh203/react-flipbook';
+import { useMediaQuery } from "@uidotdev/usehooks";
 import Image from 'next/image';
 // import 'react-pdf/dist/Page/AnnotationLayer.css';
 // import 'react-pdf/dist/Page/TextLayer.css';
-import './pdf-viewer.css';
+import './book.css';
 
 // pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -23,8 +25,8 @@ import './pdf-viewer.css';
 
 const maxWidth = 1000;
 const pageCount = 22;
-const pageWidth = 600;
-const pageHeight = 900;
+const pageWidth = 3200;
+const pageHeight = 4800;
 const bookTitle = "Daisy the Dino's Day Away";
 
 const pages = Array.from({ length: pageCount }, (_, index) => {
@@ -44,7 +46,7 @@ export const PdfViewer = () => {
   const [numPages, setNumPages] = useState<number>(pageCount);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [currentImage, setCurrentImage] = useState<string | null>(null);
-  const flipbookRef = useRef<ReactFlipBookRef | null>(null);
+  const flipbookRef = useRef<ReactNode | null>(null);
   const size = useWindowSize();
 
   const movePrev = useCallback(() => {
@@ -85,17 +87,9 @@ export const PdfViewer = () => {
 
   useKeyboard(mappedKeys);
 
-  const onDocumentLoadSuccess = useCallback(({ numPages: nextNumPages }: PDFDocumentProxy): void => {
-    setNumPages(nextNumPages);
-  }, []);
-
   const avatar = useMemo(() => {
     return <Avatar src="images/daisy.png" />;
   }, []);
-
-  const onChangeOrientation = (orientation: string) => {
-
-  };
 
   return (
     <div className="grid w-full h-full fixed left-0 top-0">
@@ -103,16 +97,34 @@ export const PdfViewer = () => {
       <div className="align-middle self-center justify-self-center items-center content-center">
         <ReactFlipBook width={pageWidth}
           height={pageHeight}
-          showNavigationButtons={false}
+          mobileScrollSupport={true}
+          showNavigationButtons={true}
           showPageNumbers={false}
-          ref={flipbookRef}
+          currentPage={pageNumber}
+          showPageCorners={true}
+          pageShadow={true}
+          enableTouchSwipe={true}
+          enableKeyboardNav={true}
+          showCover={false}
+          pageMargin={0}
+          useMouseEvents={true}
+          drawShadow={true}
+          style={{  }}
+          maxWidth={500}
+          swipeDistance={20}
+          className=""
           onPageChange={(page) => { setPageNumber(page); }}>
           {
             pages && pages.map(p => {
 
+              const w = Math.max(size?.width ?? 0, 600);
+
               return (
-                <div key={p.index} className={`page page${p.pageNum}`}>
-                  <Image src={p.url} width={pageWidth} height={pageHeight} alt=''  />
+                <div key={p.index} className={`page page${p.pageNum} relative w-full`}>
+                  <div className="grid grid-flow-col justify-center w-screen h-screen">
+                    <Image src={p.url} width={pageWidth} height={pageHeight} alt=''
+                      className="self-center object-center place-self-center justify-center center justify-self-center aspect-2/3 portrait:max-w-dvw not-portrait:max-h-dvh object-contain" />
+                  </div>
                 </div>
               )
             })
@@ -124,11 +136,11 @@ export const PdfViewer = () => {
       <Paper className="w-full fixed left-0 top-0 h-full" elevation={3} square>
         <Image src={currentImage ?? ''} alt='' />
       </Paper> */}
-      <Card className="fixed top-10 right-10 text-right text-white z-100">
+      {/* <Card className="fixed top-10 right-10 text-right text-white z-100 not-xl:opacity-0 not-xl:hidden">
         <CardHeader title={bookTitle} subheader={'by Trey Morris'} avatar={avatar} />
       </Card>
-      <div className="left-0 w-full flex justify-center fixed bottom-2 md:bottom-5 lg:bottom-10">
-        <div className="z-100 w-[90%] ">
+      <div className="left-0 w-full grid justify-center fixed bottom-2 md:bottom-5 lg:bottom-10">
+        <div className="z-100 items-center justify-center place-content-center">
           <Card className="p-4" sx={{ display: 'inline-flex', alignContent: 'center', justifyContent: 'center', placeContent: 'center', placeSelf: 'center', alignSelf: 'center', justifySelf: 'center' }}>
             <Pagination count={numPages} page={pageNumber} onChange={(event: React.ChangeEvent<unknown>, page: number) => {
               setPageNumber(page);
@@ -136,7 +148,7 @@ export const PdfViewer = () => {
             }} siblingCount={0} color="standard" showFirstButton={false} showLastButton={false} size='medium' />
           </Card>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 
