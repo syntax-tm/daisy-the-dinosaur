@@ -2115,6 +2115,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vuvandinh203/react-flipbook@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@vuvandinh203/react-flipbook@npm:1.0.2"
+  dependencies:
+    page-flip: "npm:^2.0.7"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 10c0/7d951692b2f9f281418f9041731ace62f16204846d6fb54b414e2817fa40eca33d9fd8d6a4d9605e3b9ef71f763a21f89ee246bc4334e26b3bed4621a4ed38ab
+  languageName: node
+  linkType: hard
+
 "@wojtekmaj/react-hooks@npm:^2.2.0":
   version: 2.2.0
   resolution: "@wojtekmaj/react-hooks@npm:2.2.0"
@@ -2642,6 +2654,7 @@ __metadata:
     "@types/react": "npm:^19.2.18"
     "@types/react-dom": "npm:^19.2.4"
     "@uidotdev/usehooks": "npm:2.4.1"
+    "@vuvandinh203/react-flipbook": "npm:^1.0.2"
     "@wojtekmaj/react-hooks": "npm:^2.2.0"
     babel-plugin-react-compiler: "npm:1.0.0"
     eslint: "npm:^10.8.1"
@@ -4746,6 +4759,13 @@ __metadata:
   dependencies:
     p-limit: "npm:^3.0.2"
   checksum: 10c0/2290d627ab7903b8b70d11d384fee714b797f6040d9278932754a6860845c4d3190603a0772a663c8cb5a7b21d1b16acb3a6487ebcafa9773094edc3dfe6009a
+  languageName: node
+  linkType: hard
+
+"page-flip@npm:^2.0.7":
+  version: 2.0.7
+  resolution: "page-flip@npm:2.0.7"
+  checksum: 10c0/bc3538ae85679356c263d2a8e50f6338c2769511825d6112da8958e8f2eef8e29ae8d6cbd7f664af08dad4d86727ffe9dc09d72783182097f69eea3edf4012d5
   languageName: node
   linkType: hard
 

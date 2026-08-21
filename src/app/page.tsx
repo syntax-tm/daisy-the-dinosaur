@@ -7,7 +7,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 import dynamic from 'next/dynamic';
 
-const PdfViewer = dynamic(() => import('@/components/pdf-viewer/pdf-viewer'), {
+const PdfViewer = dynamic(() => import('@/components/book/book'), {
   ssr: false,
 });
 
