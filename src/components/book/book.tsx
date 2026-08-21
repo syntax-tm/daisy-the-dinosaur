@@ -7,7 +7,7 @@ import { Pagination, Card, CardHeader, Avatar, Paper } from '@mui/material';
 import { useWindowSize } from '@uidotdev/usehooks';
 import { KeyPressAction, useKeyboard } from '@hooks/useKeyboard';
 import { ReactFlipBook } from '@vuvandinh203/react-flipbook';
-import { ReactFlipBookRef } from '@vuvandinh203/react-flipbook';
+import type { ReactFlipBookRef } from '@/types/lib';
 import { useMediaQuery } from "@uidotdev/usehooks";
 import Image from 'next/image';
 // import 'react-pdf/dist/Page/AnnotationLayer.css';
@@ -99,14 +99,14 @@ export const PdfViewer = () => {
           height={pageHeight}
           mobileScrollSupport={true}
           showNavigationButtons={true}
-          showPageNumbers={false}
+          showPageNumbers={true}
           currentPage={pageNumber}
           showPageCorners={true}
           pageShadow={true}
           enableTouchSwipe={true}
           enableKeyboardNav={true}
           showCover={false}
-          pageMargin={0}
+          pageMargin={2}
           useMouseEvents={true}
           drawShadow={true}
           style={{  }}
