@@ -4,6 +4,10 @@ body {
   font-family: 'Segoe UI', Tahoma, sans-serif;
 }
 
+.MuiContainer-fixed {
+  padding: 0 !important;
+}
+
 .Example input,
 .Example button {
   font: inherit;

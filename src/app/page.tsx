@@ -7,7 +7,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 import dynamic from 'next/dynamic';
 
-const PdfViewer = dynamic(() => import('@/components/book/book'), {
+const BookView = dynamic(() => import('@/components/book/book'), {
   ssr: false,
 });
 
@@ -23,7 +23,7 @@ export default function Home() {
       <CssBaseline />
       <div className="home absolute left-0 top-0 h-full w-full">
         <div className="">
-          <PdfViewer />
+          <BookView />
         </div>
       </div>
     </ThemeProvider>
