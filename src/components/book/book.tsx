@@ -48,7 +48,7 @@ export const PageView = ({ image, index }: PageProps) => {
 }
 
 
-const bookPages = Array.from({ length: pageCount }, (_, index): PageProps => {
+export const bookPages = Array.from({ length: pageCount }, (_, index): PageProps => {
   const pageNum = index + 1;
   const id = pageNum.toString().padStart(2, '0');
   return {
