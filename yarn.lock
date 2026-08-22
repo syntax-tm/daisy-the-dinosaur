@@ -1947,7 +1947,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uidotdev/usehooks@npm:2.4.1":
+"@uidotdev/usehooks@npm:^2.4.1":
   version: 2.4.1
   resolution: "@uidotdev/usehooks@npm:2.4.1"
   peerDependencies:
@@ -2653,7 +2653,7 @@ __metadata:
     "@types/node": "npm:^26.2.0"
     "@types/react": "npm:^19.2.18"
     "@types/react-dom": "npm:^19.2.4"
-    "@uidotdev/usehooks": "npm:2.4.1"
+    "@uidotdev/usehooks": "npm:^2.4.1"
     "@vuvandinh203/react-flipbook": "npm:^1.0.2"
     "@wojtekmaj/react-hooks": "npm:^2.2.0"
     babel-plugin-react-compiler: "npm:1.0.0"

@@ -4,6 +4,9 @@ body {
   font-family: 'Segoe UI', Tahoma, sans-serif;
 }
 
+.MuiContainer-root {
+}
+
 .MuiContainer-fixed {
   padding: 0 !important;
 }
