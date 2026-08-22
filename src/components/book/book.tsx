@@ -15,6 +15,7 @@ import './book.css';
 import { chunkArray } from '@/types/array';
 import { Page } from '../page/page';
 import { ArrowLeft, ArrowRight } from '@mui/icons-material';
+import { formatString } from '@/types';
 
 // pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -46,13 +47,14 @@ export const PageView = ({ image, index }: PageProps) => {
   )
 }
 
+const imageUrl = 'https://github.com/syntax-tm/daisy-the-dinosaur/blob/main/public/docs/daisy_the_dinosaurs_day_away/page-{0}.png?raw=true'
 
 export const bookPages = Array.from({ length: pageCount }, (_, index): PageProps => {
   const pageNum = index + 1;
   const id = pageNum.toString().padStart(2, '0');
   return {
     index,
-    image: `docs/daisy_the_dinosaurs_day_away/page-${id}.png`,
+    image: formatString(imageUrl, id),
   }
 });
 

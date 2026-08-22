@@ -1,5 +1,8 @@
 import type { NextConfig } from "next";
 
+const isProd = process.env.NODE_ENV === 'production';
+const repoName = 'daisy-the-dinosaur';
+
 const nextConfig: NextConfig = {
   /* config options here */
   //reactCompiler: true,
@@ -7,7 +10,8 @@ const nextConfig: NextConfig = {
 
   },
   output: "export",
-  basePath: "/daisy-the-dinosaur",
+  basePath: isProd ? `/${repoName}` : '',
+  assetPrefix: isProd ? `/${repoName}` : '',
   compiler: {
     styledComponents: true,
   },
