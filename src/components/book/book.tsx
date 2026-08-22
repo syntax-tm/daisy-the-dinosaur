@@ -7,7 +7,6 @@ import { Pagination, Card, CardHeader, Avatar, Paper, Container, IconButton } fr
 import { useWindowSize } from '@uidotdev/usehooks';
 import { KeyPressAction, useKeyboard } from '@hooks/useKeyboard';
 import { ReactFlipBook } from '@vuvandinh203/react-flipbook';
-import type { ReactFlipBookRef } from '@/types/lib';
 import { useMediaQuery } from "@uidotdev/usehooks";
 import Image from 'next/image';
 // import 'react-pdf/dist/Page/AnnotationLayer.css';
