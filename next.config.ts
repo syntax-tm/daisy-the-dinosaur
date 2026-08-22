@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
 
   },
   output: "export",
-  basePath: "daisy-the-dinosaur",
+  basePath: "/daisy-the-dinosaur",
   compiler: {
     styledComponents: true,
   },
