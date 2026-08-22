@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import '@fontsource/roboto/300.css';
@@ -16,9 +16,18 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  initialScale: 1,
+  maximumScale: 1,
+  width: 'device-width',
+  userScalable: false,
+  interactiveWidget: 'resizes-content',
+};
+
 export const metadata: Metadata = {
   title: "Daisy the Dino's Day Away",
   description: "A children's book featuring Daisy the Dinosaur.",
+  category: "Personal Site"
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
