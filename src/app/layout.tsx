@@ -27,16 +27,22 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "Daisy the Dino's Day Away",
   description: "A children's book featuring Daisy the Dinosaur.",
-  category: "Personal Site"
+  category: "Personal Site",
+  other: {
+    rel: 'preload',
+    as: 'image',
+    href: 'docs/daisy_the_dinosaurs_day_away/page-01.png'
+  }
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+      <body className="h-screen w-screen overflow-hidden">
+        {children}
+      </body>
     </html>
   );
 }
