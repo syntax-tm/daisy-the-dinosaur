@@ -63,16 +63,16 @@ const useSwipe = (input: SwipeInput): SwipeOutput => {
       }
     }
 
-    if (isUpSwipe) {
+    if (isUpSwipe && input.onSwipedUp) {
       input.onSwipedUp();
     }
-    if (isDownSwipe) {
+    if (isDownSwipe && input.onSwipedDown) {
       input.onSwipedDown();
     }
-    if (isLeftSwipe) {
+    if (isLeftSwipe && input.onSwipedLeft) {
       input.onSwipedLeft();
     }
-    if (isRightSwipe) {
+    if (isRightSwipe && input.onSwipedRight) {
       input.onSwipedRight();
     }
   }, [input]);

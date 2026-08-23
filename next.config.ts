@@ -25,7 +25,13 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   turbopack: {},
-  webpack: (config) => {
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.devtool = 'inline-source-map';
+      config.resolve.extensions = ['.ts', '.tsx', '.js', '.jsx', '.json'];
+      config.output.sourceMapFilename = "[name].js.map";
+    }
+
     config.module.rules.push({
       test: /\.pdf$/,
       type: 'asset/resource',
