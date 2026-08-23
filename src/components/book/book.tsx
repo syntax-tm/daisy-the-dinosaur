@@ -14,12 +14,13 @@ import Image from 'next/image';
 import './book.css';
 import { chunkArray } from '@/types/array';
 import { Page } from '../page/page';
-import { ArrowLeft, ArrowRight } from '@mui/icons-material';
+import { ArrowLeft, ArrowRight, QuestionAnswerSharp } from '@mui/icons-material';
 import { formatString } from '@/types';
 import BookImage from '../book-image/book-image';
+import useSwipe from '@/hooks/useSwipe';
 
 // pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
-
+QuestionAnswerSharp
 // const options = {
 //   cMapUrl: '/cmaps/',
 //   standardFontDataUrl: '/standard_fonts/',
@@ -210,6 +211,21 @@ const BookView = ({ pages = bookPages }: { pages: PageProps[] }) => {
     setOptions(nextOptions);
   }, [orientation, pages]);
 
+  const movePrev = useCallback(() => {
+    if (!options.allowPrev) return;
+    setOptions({ ...options, pageNumber: options.pageNumber - 1 });
+  }, [options]);
+
+  const moveNext = useCallback(() => {
+    if (!options.allowNext) return;
+    setOptions({ ...options, pageNumber: options.pageNumber + 1 });
+  }, [options]);
+
+  useSwipe({
+    onSwipedLeft: moveNext,
+    onSwipedRight: movePrev,
+  });
+
   if (!currentPage) return null;
 
   const page = currentPage as BookPageProps;
@@ -263,29 +279,29 @@ const BookView = ({ pages = bookPages }: { pages: PageProps[] }) => {
   return (
     <div>
       {innerView}
-      <div className="fixed w-screen h-screen left-0 top-0 place-content-between justify-items-center flex flex-row">
+      <div className="fixed w-screen h-screen left-0 top-0 z-0 place-content-between justify-items-center flex flex-row pointer-events-none">
         <IconButton disabled={!options.allowPrev}
-          className={`text-white hover:text-blue-400 active:text-gray-600 align-middle object-scale-down aspect-square place-self-center max-h-20 my-auto ${options.allowPrev ? '' : 'opacity-0'}`}
+          className={`text-white hover:text-blue-400 active:text-gray-600 z-100 align-middle object-scale-down pointer-events-auto aspect-square place-self-center max-h-20 my-auto ${options.allowPrev ? '' : 'opacity-0'}`}
           onClick={() => {
             if (!options.allowPrev) return;
             setOptions({ ...options, pageNumber: options.pageNumber - 1 });
           }}>
-          <ArrowLeft className="object-fill aspect-square scale-300 m-2" />
+          <ArrowLeft className="object-fill aspect-square scale-300 m-2 drop-shadow-lg drop-shadow-neutral-950" />
         </IconButton>
         <IconButton disabled={!options.allowNext}
-          className={`text-white hover:text-blue-400 active:text-gray-600 align-middle object-scale-down aspect-square place-self-center max-h-20 my-auto ${options.allowNext ? '' : 'opacity-0'}`}
+          className={`text-white hover:text-blue-400 active:text-gray-600 z-100 align-middle object-scale-down pointer-events-auto aspect-square place-self-center max-h-20 my-auto ${options.allowNext ? '' : 'opacity-0'}`}
           onClick={() => {
             if (!options.allowNext) return;
             setOptions({ ...options, pageNumber: options.pageNumber + 1 });
           }}>
-          <ArrowRight className="object-fill aspect-square scale-300 m-2" />
+          <ArrowRight className="object-fill aspect-square scale-300 m-2 drop-shadow-lg z-100 drop-shadow-neutral-950 " />
         </IconButton>
       </div>
       <div className="left-0 w-full grid justify-center fixed bottom-2 md:bottom-5 lg:bottom-10">
         <div className="z-100 items-center justify-center place-content-center">
           <Card className="p-2" sx={{ display: 'inline-flex', alignContent: 'center', justifyContent: 'center', placeContent: 'center', placeSelf: 'center', alignSelf: 'center', justifySelf: 'center' }}>
             <Pagination count={content?.length ?? 0} page={options.pageNumber} onChange={(event: React.ChangeEvent<unknown>, page: number) => { setOptions({ ...options, pageNumber: page }) }}
-              siblingCount={2} color="standard" showFirstButton={false} showLastButton={false} size='medium' />
+              siblingCount={1} color="standard" showFirstButton={false} showLastButton={false} size='medium' />
           </Card>
         </div>
       </div>
