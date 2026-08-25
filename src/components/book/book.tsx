@@ -7,7 +7,7 @@ import { useOrientation } from '@uidotdev/usehooks';
 import { chunkArray } from '@/types/array';
 import { Page } from '../page/page';
 import { ArrowLeft, ArrowRight, QuestionAnswerSharp } from '@mui/icons-material';
-import { formatString, Book, BookPage } from 'types';
+import { formatString, Book, IBookPage } from 'types';
 import BookImage from '../book-image/book-image';
 import { daisysDayAway } from '@/config/daisys-day-away';
 import { useSwipe, useKeyboard, useWheel, KeyPressAction } from '@hooks/index';
@@ -15,7 +15,7 @@ import './book.css';
 
 const bookTitle = "Daisy the Dino's Day Away";
 
-export const PageView = (page: BookPage) => {
+export const PageView = (page: IBookPage) => {
   return page.src && page.src !== '' && (
     <div key={page.src} className={`page h-full w-full aspect-2/3 object-cover place-content-center place-items-center`}>
       <BookImage src={page.src} alt='' />
@@ -23,7 +23,7 @@ export const PageView = (page: BookPage) => {
   )
 }
 
-export type SplitBookPage = [left: BookPage | null, right: BookPage | null];
+export type SplitBookPage = [left: IBookPage | null, right: IBookPage | null];
 
 export interface PageViewBase<T> {
   index: number;
@@ -31,11 +31,11 @@ export interface PageViewBase<T> {
   [index: number]: T;
 }
 
-export interface SinglePageViewProps extends PageViewBase<BookPage | null> {
+export interface SinglePageViewProps extends PageViewBase<IBookPage | null> {
   index: number;
   pageNumber: number;
-  page: BookPage | null;
-  [index: number]: BookPage | null;
+  page: IBookPage | null;
+  [index: number]: IBookPage | null;
 }
 
 export interface SplitPageViewProps extends PageViewBase<SplitBookPage> {
@@ -45,7 +45,7 @@ export interface SplitPageViewProps extends PageViewBase<SplitBookPage> {
   [index: number]: SplitBookPage;
 }
 
-export function buildBook(pages: BookPage[], pagesPerView: number = 2) {
+export function buildBook(pages: IBookPage[], pagesPerView: number = 2) {
   // re-index the pages
   pages.forEach((p, i) => {
     pages[i] = { ...p, index: i };
@@ -92,7 +92,7 @@ export interface BookViewState {
   allowPrev: boolean;
 }
 
-const BookView = ({ pages = daisysDayAway.pages }: { pages: BookPage[] }) => {
+const BookView = ({ pages = daisysDayAway.pages }: { pages: IBookPage[] }) => {
 
   const orientation = useOrientation();
   const router = useRouter();
@@ -101,10 +101,8 @@ const BookView = ({ pages = daisysDayAway.pages }: { pages: BookPage[] }) => {
   const [allowPrev, setAllowPrev] = useState(false);
   const [allowNext, setAllowNext] = useState(false);
   const [pagesPerView, setPagesPerView] = useState(1);
-  const [currentItem, setCurrentItem] = useState<SplitPageViewProps | BookPage | null>(null);
-  // const [options, setOptions] = useState<BookViewState>(defaultState);
-  // const [currentPage, setCurrentPage] = useState<BookPageProps | null>(null);
-  const [content, setContent] = useState<BookPage[] | SplitPageViewProps[] | null>(() => {
+  const [currentItem, setCurrentItem] = useState<SplitPageViewProps | IBookPage | null>(null);
+  const [content, setContent] = useState<IBookPage[] | SplitPageViewProps[] | null>(() => {
     const ppv = orientation.type.startsWith('landscape')
       ? 2
       : 1;
@@ -151,7 +149,7 @@ const BookView = ({ pages = daisysDayAway.pages }: { pages: BookPage[] }) => {
     const prevIndex = prevItem?.index;
 
     if (prevIndex) {
-      const selectedPage = c.findIndex((p: BookPage | SplitPageViewProps) => {
+      const selectedPage = c.findIndex((p: IBookPage | SplitPageViewProps) => {
         return p.index === prevIndex;
       });
 
@@ -211,7 +209,7 @@ const BookView = ({ pages = daisysDayAway.pages }: { pages: BookPage[] }) => {
 
   if (!currentPage) return null;
 
-  const page = currentPage as BookPage;
+  const page = currentPage as IBookPage;
   const splitPage = currentPage as SplitPageViewProps;
 
   let innerView = null;

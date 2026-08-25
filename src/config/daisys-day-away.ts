@@ -1,6 +1,8 @@
-import { Book } from "@/types";
+import { Book, IBook } from "types";
 
-export const daisysDayAway: Book = {
+export const daisysDayAway: Book = new Book();
+
+const bookProps: IBook = {
     author: "Trey Morris",
     title: "Daisy the Dino's Day Away",
     pages: [
@@ -80,3 +82,5 @@ export const daisysDayAway: Book = {
         },
     ],
 };
+
+daisysDayAway.load(bookProps);
