@@ -185,9 +185,10 @@ const BookView = ({ pages = daisysDayAway.pages }: { pages: BookPage[] }) => {
       ['arrowright', { repeat: false, onKeyPress: moveNext }],
       ['enter', { repeat: false, onKeyPress: moveNext }],
       [' ', { repeat: false, onKeyPress: moveNext }],
+      ['backspace', { repeat: false, onKeyPress: movePrev }],
       ['escape', { repeat: false, onKeyPress: moveFirst }],
     ]);
-  }, [movePrev, moveNext]);
+  }, [movePrev, moveNext, moveFirst, moveLast]);
 
   useKeyboard(keyboardActions);
 
@@ -212,7 +213,7 @@ const BookView = ({ pages = daisysDayAway.pages }: { pages: BookPage[] }) => {
 
     innerView = (
       <div className="fixed left-0 top-0 w-screen h-screen">
-        <Container fixed className="page-container p-0 m-0 flex">
+        <Paper elevation={1} className="page-container p-0 m-0 flex">
           <div className="w-1/2 h-screen place-content-center">
           {
             leftPage && (
@@ -236,14 +237,16 @@ const BookView = ({ pages = daisysDayAway.pages }: { pages: BookPage[] }) => {
             )
           }
           </div>
-        </Container>
+        </Paper>
       </div>
     );
   }
   else if (!Array.isArray(page)) {
     innerView = page && (
       <div className="fixed left-0 top-0 w-screen h-screen">
-        <PageView src={page.src} index={pageNumber} />
+        <Paper elevation={1} className="page-container h-screen w-screen">
+          <PageView src={page.src} index={pageNumber} />
+        </Paper>
       </div>
     );
   }
