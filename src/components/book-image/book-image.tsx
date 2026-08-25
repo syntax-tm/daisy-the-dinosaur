@@ -1,8 +1,8 @@
 import { Box, Card, Container, Icon } from "@mui/material";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { delay } from "types";
 import "./book-image.css";
-import { delay } from "@/types";
 
 export interface BookImageProps {
   src: string;

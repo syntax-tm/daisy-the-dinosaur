@@ -44,6 +44,12 @@
       ],
       "@docs/*": [
         "./public/docs/*"
+      ],
+      "types": [
+        "./src/types/"
+      ],
+      "types/*": [
+        "./src/types/*"
       ]
     }
   },

@@ -12,7 +12,7 @@ export interface SwipeInput {
   onSwipeRight?: () => void;
 }
 
-const useSwipe = ({ minDistance = MIN_SWIPE_DISTANCE, onSwipeUp, onSwipeDown, onSwipeLeft, onSwipeRight }: SwipeInput) => {
+export const useSwipe = ({ minDistance = MIN_SWIPE_DISTANCE, onSwipeUp, onSwipeDown, onSwipeLeft, onSwipeRight }: SwipeInput) => {
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const touchStartY = useRef(0);

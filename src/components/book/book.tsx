@@ -1,19 +1,17 @@
 'use client';
 
 import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { Pagination, Card, CardHeader, Avatar, Paper, Container, IconButton } from '@mui/material';
 import { useOrientation } from '@uidotdev/usehooks';
 import { chunkArray } from '@/types/array';
 import { Page } from '../page/page';
 import { ArrowLeft, ArrowRight, QuestionAnswerSharp } from '@mui/icons-material';
-import { formatString } from '@/types';
+import { formatString, Book, BookPage } from 'types';
 import BookImage from '../book-image/book-image';
-import { Book, BookPage } from '@/types/book';
 import { daisysDayAway } from '@/config/daisys-day-away';
-import useSwipe from '@/hooks/useSwipe';
-import useKeyboard, { KeyPressAction } from '@/hooks/useKeyboard';
+import { useSwipe, useKeyboard, useWheel, KeyPressAction } from '@hooks/index';
 import './book.css';
-import useWheel from '@/hooks/useWheel';
 
 const bookTitle = "Daisy the Dino's Day Away";
 
@@ -97,7 +95,9 @@ export interface BookViewState {
 const BookView = ({ pages = daisysDayAway.pages }: { pages: BookPage[] }) => {
 
   const orientation = useOrientation();
-
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [allowPrev, setAllowPrev] = useState(false);
   const [allowNext, setAllowNext] = useState(false);
   const [pagesPerView, setPagesPerView] = useState(1);
@@ -110,7 +110,10 @@ const BookView = ({ pages = daisysDayAway.pages }: { pages: BookPage[] }) => {
       : 1;
     return buildBook(pages, ppv);
   });
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(() => {
+    const pageParam = searchParams.get('page') ?? '1';
+    return Number(pageParam);
+  });
   const [totalPages, setTotalPages] = useState(content?.length ?? 0);
 
   const currentPage = content?.[pageNumber - 1];
@@ -124,7 +127,14 @@ const BookView = ({ pages = daisysDayAway.pages }: { pages: BookPage[] }) => {
     setAllowPrev(pageNumber > 1);
     setAllowNext(pageNumber < totalPages);
 
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('page', pageNumber.toString());
+
+    router.replace(`${pathname}?${params.toString()}`);
+
   }, [pageNumber, totalPages]);
+
+
 
   useEffect(() => {
     const nextPpv = orientation.type.startsWith('landscape')
