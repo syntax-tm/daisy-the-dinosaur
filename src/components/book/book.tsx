@@ -1,10 +1,8 @@
 'use client';
 
 import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-// import { Document, Page, pdfjs } from 'react-pdf';
-import type { PDFDocumentProxy } from 'pdfjs-dist';
 import { Pagination, Card, CardHeader, Avatar, Paper, Container, IconButton } from '@mui/material';
-import { useOrientation, useWindowSize } from '@uidotdev/usehooks';
+import { useOrientation } from '@uidotdev/usehooks';
 import { chunkArray } from '@/types/array';
 import { Page } from '../page/page';
 import { ArrowLeft, ArrowRight, QuestionAnswerSharp } from '@mui/icons-material';
@@ -15,6 +13,7 @@ import { daisysDayAway } from '@/config/daisys-day-away';
 import useSwipe from '@/hooks/useSwipe';
 import useKeyboard, { KeyPressAction } from '@/hooks/useKeyboard';
 import './book.css';
+import useWheel from '@/hooks/useWheel';
 
 const bookTitle = "Daisy the Dino's Day Away";
 
@@ -122,18 +121,6 @@ const BookView = ({ pages = daisysDayAway.pages }: { pages: BookPage[] }) => {
 
   useEffect(() => {
 
-    if (pageNumber < 1) {
-      setPageNumber(1);
-    }
-    else if (content && pageNumber > content.length) {
-      setPageNumber(content.length);
-    }
-
-    setTotalPages(content?.length ?? -1);
-  }, [pageNumber, content]);
-
-  useEffect(() => {
-
     setAllowPrev(pageNumber > 1);
     setAllowNext(pageNumber < totalPages);
 
@@ -151,18 +138,14 @@ const BookView = ({ pages = daisysDayAway.pages }: { pages: BookPage[] }) => {
     setTotalPages(c.length);
 
     const prevItem = content?.[pageNumber - 1];
-    const prevItemIndex = prevItem?.index;
+    const prevIndex = prevItem?.index;
 
-    if (prevItemIndex) {
-      const newPageNumber = c.findIndex((p: BookPage | SplitPageViewProps) => {
-        if ('page' in p) {
-          return p.page[0]?.index === prevItemIndex
-            || p.page[1]?.index === prevItemIndex;
-        }
-        return p.index === prevItemIndex;
+    if (prevIndex) {
+      const selectedPage = c.findIndex((p: BookPage | SplitPageViewProps) => {
+        return p.index === prevIndex;
       });
 
-      setPageNumber(newPageNumber + 1);
+      setPageNumber(selectedPage + 1);
     }
 
   }, [orientation.type, pages]);
@@ -200,11 +183,20 @@ const BookView = ({ pages = daisysDayAway.pages }: { pages: BookPage[] }) => {
       ['arrowdown', { repeat: false, onKeyPress: moveFirst }],
       ['arrowleft', { repeat: false, onKeyPress: movePrev }],
       ['arrowright', { repeat: false, onKeyPress: moveNext }],
+      ['enter', { repeat: false, onKeyPress: moveNext }],
+      [' ', { repeat: false, onKeyPress: moveNext }],
       ['escape', { repeat: false, onKeyPress: moveFirst }],
     ]);
   }, [movePrev, moveNext]);
 
   useKeyboard(keyboardActions);
+
+  useWheel({
+    onWheelDown: movePrev,
+    onWheelUp: moveNext,
+    onWheelLeft: movePrev,
+    onWheelRight: moveNext,
+  });
 
   if (!currentPage) return null;
 
