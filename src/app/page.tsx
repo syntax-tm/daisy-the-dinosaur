@@ -4,7 +4,7 @@
 import Image from "next/image";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { bookPages } from "@/components/book/book";
+import { daisysDayAway } from "@/config/daisys-day-away";
 import dynamic from 'next/dynamic';
 
 const BookView = dynamic(() => import('@/components/book/book'), {
@@ -23,7 +23,7 @@ export default function Home() {
       <CssBaseline />
       <div className="home absolute left-0 top-0 h-full w-full">
         <div className="">
-          <BookView pages={bookPages} />
+          <BookView pages={daisysDayAway.pages} />
         </div>
       </div>
     </ThemeProvider>

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useActiveElement } from "./useActiveElement";
+import CaseInsensitiveMap from "@/types/case-insensitive-map";
 
 export type StandardVoidFn = () => void;
 export type KeyboardEventFn = (e: KeyboardEvent) => void;
@@ -24,9 +25,21 @@ export interface KeyboardOutput {
     onKeyDown: (e: KeyboardEvent) => void;
 }
 
-export const useKeyboard = (actions: KeyboardInput ): KeyboardOutput => {
+export const useKeyboard = (actions: KeyboardInput): KeyboardOutput => {
+
+  // const loadInput = (arg: Record<string, KeyPressAction>) => {
+  //   const map = new CaseInsensitiveMap<KeyPressAction>();
+  //   Object.entries(input).forEach(([key, action]) => {
+  //     map.set(key, action);
+  //   });
+  //   return map;
+  // }
+
   const [keysDown, setKeysDown] = useState<string[]>([]);
   const { isInput } = useActiveElement();
+  // const [actions, setActions] = useState<CaseInsensitiveMap<KeyPressAction>>(() => {
+  //   return loadInput(input);
+  // });
 
   const isMapped = useCallback((key: string): boolean => {
     return actions.has(key.toLowerCase());
