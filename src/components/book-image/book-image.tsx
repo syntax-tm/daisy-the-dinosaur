@@ -5,13 +5,11 @@ import "./book-image.css";
 import { delay } from "@/types";
 
 export interface BookImageProps {
-  image: string;
-  width: number;
-  height: number;
+  src: string;
   alt?: string;
 }
 
-export function BookImage( { image, width, height, alt }: BookImageProps ) {
+export function BookImage( { src, alt }: BookImageProps ) {
   const [isLoading, setIsLoading] = useState(true);
   const imageRef = useRef<HTMLImageElement | null>(null);
 
@@ -26,7 +24,7 @@ export function BookImage( { image, width, height, alt }: BookImageProps ) {
       {
         <Image
           ref={imageRef}
-          src={image} fill alt={alt ?? ''}
+          src={src} fill alt={alt ?? ''}
           loading='eager'
           className={`aspect-2/3 object-scale-down duration-300 ease-in-out z-10 ${
             isLoading ? 'scale-95 blur-sm opacity-0' : 'scale-100 blur-0 opacity-100'

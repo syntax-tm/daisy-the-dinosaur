@@ -5,9 +5,6 @@ import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } f
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 import { Pagination, Card, CardHeader, Avatar, Paper, Container, IconButton } from '@mui/material';
 import { useOrientation, useWindowSize } from '@uidotdev/usehooks';
-// import 'react-pdf/dist/Page/AnnotationLayer.css';
-// import 'react-pdf/dist/Page/TextLayer.css';
-import './book.css';
 import { chunkArray } from '@/types/array';
 import { Page } from '../page/page';
 import { ArrowLeft, ArrowRight, QuestionAnswerSharp } from '@mui/icons-material';
@@ -16,32 +13,18 @@ import BookImage from '../book-image/book-image';
 import { Book, BookPage } from '@/types/book';
 import { daisysDayAway } from '@/config/daisys-day-away';
 import useSwipe from '@/hooks/useSwipe';
-import useKeyboard, { KeyboardInput, KeyPressAction } from '@/hooks/useKeyboard';
+import useKeyboard, { KeyPressAction } from '@/hooks/useKeyboard';
+import './book.css';
 
-// pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
-
-// const options = {
-//   cMapUrl: '/cmaps/',
-//   standardFontDataUrl: '/standard_fonts/',
-//   wasmUrl: '/wasm/',
-//   enableHwa: true,
-// };
-
-const maxWidth = 1000;
-const pageCount = 22;
-const pageWidth = 3200;
-const pageHeight = 4800;
 const bookTitle = "Daisy the Dino's Day Away";
 
 export const PageView = (page: BookPage) => {
   return page.src && page.src !== '' && (
     <div key={page.src} className={`page h-full w-full aspect-2/3 object-cover place-content-center place-items-center`}>
-      <BookImage image={page.src} width={pageWidth} height={pageHeight} alt='' />
+      <BookImage src={page.src} alt='' />
     </div>
   )
 }
-
-//const imageUrl = 'https://github.com/syntax-tm/daisy-the-dinosaur/blob/main/public/docs/daisy_the_dinosaurs_day_away/page-{0}.png?raw=true';
 
 export type SplitBookPage = [left: BookPage | null, right: BookPage | null];
 
@@ -52,12 +35,14 @@ export interface PageViewBase<T> {
 }
 
 export interface SinglePageViewProps extends PageViewBase<BookPage | null> {
+  index: number;
   pageNumber: number;
   page: BookPage | null;
   [index: number]: BookPage | null;
 }
 
 export interface SplitPageViewProps extends PageViewBase<SplitBookPage> {
+  index: number;
   pageNumber: number;
   page: SplitBookPage;
   [index: number]: SplitBookPage;
@@ -109,14 +94,6 @@ export interface BookViewState {
   allowNext: boolean;
   allowPrev: boolean;
 }
-
-const defaultState: BookViewState = {
-  pageNumber: 1,
-  pagesPerView: 1,
-  totalPages: 0,
-  allowNext: true,
-  allowPrev: false,
-};
 
 const BookView = ({ pages = daisysDayAway.pages }: { pages: BookPage[] }) => {
 
@@ -172,6 +149,22 @@ const BookView = ({ pages = daisysDayAway.pages }: { pages: BookPage[] }) => {
     setContent(c);
     setPagesPerView(nextPpv);
     setTotalPages(c.length);
+
+    const prevItem = content?.[pageNumber - 1];
+    const prevItemIndex = prevItem?.index;
+
+    if (prevItemIndex) {
+      const newPageNumber = c.findIndex((p: BookPage | SplitPageViewProps) => {
+        if ('page' in p) {
+          return p.page[0]?.index === prevItemIndex
+            || p.page[1]?.index === prevItemIndex;
+        }
+        return p.index === prevItemIndex;
+      });
+
+      setPageNumber(newPageNumber + 1);
+    }
+
   }, [orientation.type, pages]);
 
   const moveFirst = () => {
