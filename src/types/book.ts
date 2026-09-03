@@ -1,9 +1,14 @@
+import { ReactNode } from "react";
+
 export interface IBookPage {
-  src: string;
+  src?: string;
   index?: number;
   isCover?: boolean;
   isBackCover?: boolean;
   isHidden?: boolean;
+  children?: ReactNode;
+  isLeft?: boolean;
+  isRight?: boolean;
 }
 
 export interface IBook {

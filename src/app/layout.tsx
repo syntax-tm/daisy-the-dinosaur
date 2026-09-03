@@ -35,13 +35,20 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+  book,
+}: Readonly<{
+  children: React.ReactNode;
+  book: React.ReactNode;
+}>) {
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="h-screen w-screen overflow-hidden">
         {children}
+        {book}
       </body>
     </html>
   );

@@ -7,20 +7,21 @@ import "./book-image.css";
 export interface BookImageProps {
   src: string;
   alt?: string;
+  className?: string;
 }
 
-export function BookImage( { src, alt }: BookImageProps ) {
+export function BookImage( { src, alt, className }: BookImageProps ) {
   const [isLoading, setIsLoading] = useState(true);
   const imageRef = useRef<HTMLImageElement | null>(null);
 
   return (
-    <div className="flex place-content-center justify-items-center place-items-center relative h-full w-full">
+    <div className={`${className ? className : ''}`}>
       {/* Custom Skeleton UI */}
-      {isLoading && (
+      {/* {isLoading && (
         <div className="place-items-center place-content-center place-self-center h-full">
           <span className="loader place-self-center justify-self-center"></span>
         </div>
-      )}
+      )} */}
       {
         <Image
           ref={imageRef}

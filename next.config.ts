@@ -24,13 +24,25 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  turbopack: {},
+  turbopack: {
+    rules: {
+      '*.txt': {
+        loaders: ['raw-loader'],
+        as: '*.js',
+      }
+    }
+  },
   webpack: (config, { dev }) => {
     if (dev) {
       config.devtool = 'inline-source-map';
       config.resolve.extensions = ['.ts', '.tsx', '.js', '.jsx', '.json'];
       config.output.sourceMapFilename = "[name].js.map";
     }
+
+    config.module.rules.push({
+      test: /\.txt$/,
+      use: 'raw-loader',
+    });
 
     config.module.rules.push({
       test: /\.pdf$/,

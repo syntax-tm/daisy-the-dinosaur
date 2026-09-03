@@ -2,6 +2,7 @@
 
 import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { motion, AnimatePresence } from "framer-motion";
 import { Pagination, Card, CardHeader, Avatar, Paper, Container, IconButton } from '@mui/material';
 import { useOrientation } from '@uidotdev/usehooks';
 import { chunkArray } from '@/types/array';
@@ -15,10 +16,10 @@ import './book.css';
 
 const bookTitle = "Daisy the Dino's Day Away";
 
-export const PageView = (page: IBookPage) => {
+export const PageView = (page: IBookPage, position?: 'left' | 'right') => {
   return page.src && page.src !== '' && (
-    <div key={page.src} className={`page h-full w-full aspect-2/3 object-cover place-content-center place-items-center`}>
-      <BookImage src={page.src} alt='' />
+    <div key={page.index} className={`page h-full w-full aspect-2/3 object-cover`}>
+      {page.src && <BookImage src={page.src} alt='' />}
     </div>
   )
 }
@@ -72,6 +73,14 @@ export function buildBook(pages: IBookPage[], pagesPerView: number = 2) {
 
   const splitPageProps = splitPages.map((p, i) => {
     const firstItem = p[0] ?? p[1];
+    if (p[0]) {
+      p[0].isLeft = true;
+      p[0].isRight = false;
+    }
+    if (p[1]) {
+      p[1].isLeft = false;
+      p[1].isRight = true;
+    }
     const lowestIndex = firstItem?.index ?? -1;
     const pageProps: SplitPageViewProps = {
       index: lowestIndex,
@@ -94,19 +103,25 @@ export interface BookViewState {
 
 const BookView = ({ pages = daisysDayAway.pages }: { pages: IBookPage[] }) => {
 
-  const orientation = useOrientation();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [allowPrev, setAllowPrev] = useState(false);
-  const [allowNext, setAllowNext] = useState(false);
-  const [pagesPerView, setPagesPerView] = useState(1);
-  const [currentItem, setCurrentItem] = useState<SplitPageViewProps | IBookPage | null>(null);
-  const [content, setContent] = useState<IBookPage[] | SplitPageViewProps[] | null>(() => {
-    const ppv = orientation.type.startsWith('landscape')
+  const orientation = useOrientation();
+
+  const getPpv = useCallback(() => {
+    const nextPpv = orientation.type.startsWith('landscape')
       ? 2
       : 1;
-    return buildBook(pages, ppv);
+    return nextPpv;
+  }, [orientation.type]);
+
+  const [allowPrev, setAllowPrev] = useState(false);
+  const [allowNext, setAllowNext] = useState(false);
+  const [pagesPerView, setPagesPerView] = useState(() => {
+    return getPpv();
+  });
+  const [content, setContent] = useState<IBookPage[] | SplitPageViewProps[] | null>(() => {
+    return buildBook(pages, pagesPerView);
   });
   const [pageNumber, setPageNumber] = useState(() => {
     const pageParam = searchParams.get('page') ?? '1';
@@ -120,6 +135,18 @@ const BookView = ({ pages = daisysDayAway.pages }: { pages: IBookPage[] }) => {
     return <Avatar src="images/daisy.png" />;
   }, []);
 
+  // ensures the page number is valid between 1 and the total number of pages
+  useEffect(() => {
+
+    if (pageNumber < 1) {
+      setPageNumber(1);
+    }
+    else if (pageNumber > totalPages) {
+      setPageNumber(totalPages);
+    }
+
+  }, [pageNumber]);
+
   useEffect(() => {
 
     setAllowPrev(pageNumber > 1);
@@ -132,13 +159,8 @@ const BookView = ({ pages = daisysDayAway.pages }: { pages: IBookPage[] }) => {
 
   }, [pageNumber, totalPages]);
 
-
-
   useEffect(() => {
-    const nextPpv = orientation.type.startsWith('landscape')
-      ? 2
-      : 1;
-
+    const nextPpv = getPpv();
     const c = buildBook(pages, nextPpv);
 
     setContent(c);
@@ -221,31 +243,33 @@ const BookView = ({ pages = daisysDayAway.pages }: { pages: IBookPage[] }) => {
 
     innerView = (
       <div className="fixed left-0 top-0 w-screen h-screen">
-        <Paper elevation={1} className="page-container p-0 m-0 flex">
-          <div className="w-1/2 h-screen place-content-center">
+        <div className="flex flex-col items-center w-full h-screen">
+          <div className="grid border-r relative h-screen place-items-end">
           {
-            leftPage && (
-              <PageView src={leftPage.src} index={leftPage.index} />
+            leftPage?.src && (
+              // <PageView src={leftPage.src} index={leftPage.index} children={leftPage.children} isLeft={true} />
+              <BookImage src={leftPage.src} alt='' />
             )
           }
-          {
+          {/* {
             !leftPage && (
-              <div className="flex justify-items-center place-items-center place-content-center">
+              <div className="justify-items-center place-items-center place-content-center">
                 <Card className="text-white place-self-center self-center p-2 text-2xl" elevation={4}>
                   <CardHeader title={bookTitle} subheader={'by Trey Morris'} avatar={avatar} />
                 </Card>
               </div>
             )
-          }
+          } */}
           </div>
-          <div className="w-1/2 border-l h-screen place-content-center border-gray-400/50">
+          <div className="grid border-l relative h-screen">
           {
-            rightPage && (
-              <PageView src={rightPage.src} index={rightPage.index} />
+            rightPage?.src && (
+              // <PageView src={rightPage.src} index={rightPage.index} children={rightPage.children} isRight={true} />
+              <BookImage src={rightPage.src} alt='' />
             )
           }
           </div>
-        </Paper>
+        </div>
       </div>
     );
   }
@@ -253,7 +277,7 @@ const BookView = ({ pages = daisysDayAway.pages }: { pages: IBookPage[] }) => {
     innerView = page && (
       <div className="fixed left-0 top-0 w-screen h-screen">
         <Paper elevation={1} className="page-container h-screen w-screen">
-          <PageView src={page.src} index={pageNumber} />
+          <PageView src={page.src} index={pageNumber} children={page.children} />
         </Paper>
       </div>
     );
@@ -262,7 +286,7 @@ const BookView = ({ pages = daisysDayAway.pages }: { pages: IBookPage[] }) => {
   return (
     <div>
       {innerView}
-      <div className="fixed w-screen h-screen left-0 top-0 z-0 place-content-between justify-items-center flex flex-row pointer-events-none">
+      <div className="fixed w-screen h-screen left-0 top-0 z-0 place-content-between justify-items-center flex flex-row pointer-events-none" hidden>
         <IconButton disabled={!allowPrev}
           className={`text-white hover:text-blue-400 active:text-gray-600 z-100 align-middle object-scale-down pointer-events-auto aspect-square place-self-center max-h-20 my-auto ${allowPrev ? '' : 'opacity-0'}`}
           onClick={() => {

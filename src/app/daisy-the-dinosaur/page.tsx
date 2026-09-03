@@ -19,9 +19,7 @@ export default function Page() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <div className="home absolute left-0 top-0 h-full w-full">
-        <div className="">
-          <BookView pages={daisysDayAway.pages} />
-        </div>
+        <BookView pages={daisysDayAway.pages} />
       </div>
     </ThemeProvider>
   );
