@@ -63,21 +63,25 @@ export default function HomePage() {
       image: 'docs/daisy_the_dinosaurs_day_away/page-01.png',
       alt: "Daisy the Dino's Day Away",
       isReleased: true,
+      url: '/',
     },
     {
       image: 'docs/daisy_the_dinosaurs_first_day/cover.png',
       alt: "Daisy the Dino's First Day",
       isReleased: false,
+      url: '/',
     },
     {
       image: 'docs/daisy_the_dino_big_splash/cover.png',
       alt: "Daisy the Dino's Big Splash",
       isReleased: false,
+      url: '/',
     },
     {
       image: 'docs/daisy_the_dinosaur_finds_her_balance/cover.png',
       alt: "Daisy the Dino Finds Her Balance",
       isReleased: false,
+      url: '/',
     },
   ];
 
