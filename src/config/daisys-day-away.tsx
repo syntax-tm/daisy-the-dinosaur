@@ -1,13 +1,17 @@
 'use client';
 
 import { Book, IBook } from "types";
+import type { Route } from 'next';
 import dedication from "@docs/daisy_the_dinosaurs_day_away/dedication.txt";
+import summary from "@docs/daisy_the_dinosaurs_day_away/summary.txt";
 
 export const daisysDayAway: Book = new Book();
 
 const bookProps: IBook = {
     author: "Trey Morris",
     title: "Daisy the Dino's Day Away",
+    summary,
+    url: '/day-away',
     pages: [
         {
             src: "docs\\daisy_the_dinosaurs_day_away\\page-01.png",

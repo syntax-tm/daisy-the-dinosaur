@@ -97,15 +97,12 @@ export default function HomePage() {
         <div className="flex flex-col">
           <AppBar position="static">
             <Toolbar disableGutters>
-              <Typography variant="h6" noWrap component="a" href="#app-bar-menu">
-
+              <Typography variant="h6" align="center" noWrap component="a" href="#app-bar-menu">
+                Daisy the Dino
               </Typography>
               <IconButton>
                 <MenuIcon />
               </IconButton>
-              <Typography align="center" className="align-middle place-self-center" variant="h5">
-                Daisy the Dino
-              </Typography>
             </Toolbar>
           </AppBar>
           <div className="section mx-5 p-2 overflow-y-auto">
@@ -119,7 +116,7 @@ export default function HomePage() {
               {
                 books && books.map((book, index) => {
                   return (
-                    <Link key={index} className="grow relative border-gray-300 aspect-2/3 min-w-auto w-3xl max-w-[90%] grid" href='/'>
+                    <Link key={index} className="grow relative border-gray-300 aspect-2/3 min-w-auto w-3xl max-w-[90%] grid" href={book.url}>
                       <Image src={book.image} alt={book.alt ?? ''} fill style={{ objectFit: 'contain' }} className={`${book.isReleased ? '' : 'coming-soon'} border border-gray-300`} />
                     </Link>
                   )})

@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
+import createMDX from '@next/mdx';
 
 const isProd = process.env.NODE_ENV === 'production';
 const repoName = 'daisy-the-dinosaur';
+
+const withMDX = createMDX({
+  extension: /\.(md|mdx)$/,
+})
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -9,6 +14,7 @@ const nextConfig: NextConfig = {
   experimental: {
 
   },
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   output: "export",
   basePath: isProd ? `/${repoName}` : '',
   assetPrefix: isProd ? `/${repoName}` : '',
@@ -52,4 +58,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withMDX(nextConfig);
