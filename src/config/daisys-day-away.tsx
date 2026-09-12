@@ -129,9 +129,6 @@ const bookProps: IBook = {
             src: "docs\\daisy_the_dinosaurs_day_away\\page-26.png",
         },
         {
-            src: "docs\\daisy_the_dinosaurs_day_away\\page-26.png",
-        },
-        {
             src: "docs\\daisy_the_dinosaurs_day_away\\page-27.png",
         },
         {
