@@ -2,8 +2,6 @@
 
 //import PdfViewer from "@/components/pdf-viewer/pdf-viewer";
 import Image from "next/image";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 import { useRouter } from "next/navigation";
 import React, { useEffect, ReactNode } from "react";
 import { AppBar, BottomNavigation, BottomNavigationAction, Card, CardContent, CardHeader, CardMedia, Container, Grid, IconButton, List, ListItem, Paper, Stack, Toolbar, Typography, Icon, Box, Button } from "@mui/material";
@@ -13,12 +11,6 @@ import { BookshelfBookProps } from "@/components/bookshelf/bookshelf-book";
 import Bookshelf, { BookshelfProps } from "@/components/bookshelf/bookshelf";
 import { chunkArray } from "@/types";
 import Link from "next/link";
-
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
 
 export interface MenuItem {
   title: string,
@@ -96,13 +88,12 @@ export default function HomePage() {
 
   //const bookshelves: BookshelfBookProps[][] = chunkArray(books, 2);
 
-  useEffect(() => {
-    //router.replace('/book');
-  }, []);
+  // useEffect(() => {
+  //   //router.replace('/book');
+  // }, []);
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
+    <>
       <div className="home absolute left-0 top-0 h-full w-full">
         <div className="flex flex-col">
           <AppBar position="static">
@@ -126,7 +117,7 @@ export default function HomePage() {
               {
                 books && books.map((b, index) => {
                   return (
-                    <Link key={index} className="grow relative border-gray-300 aspect-2/3 min-w-auto w-3xl max-w-[90%] grid" href={b.url}>
+                    <Link key={index} className={`grow relative aspect-2/3 min-w-auto w-3xl max-w-[90%] grid ${b.isReleased ? 'cursor-pointer' : 'cursor-default pointer-events-none'}`} tabIndex={-1} href={b.url} aria-disabled={!b.isReleased}>
                       <Image src={b.image} alt={b.alt ?? ''} fill style={{ objectFit: 'contain' }} className={`${b.isReleased ? '' : 'coming-soon'} border border-gray-300`} />
                     </Link>
                   )})
@@ -148,6 +139,6 @@ export default function HomePage() {
           </BottomNavigation>
         </div>
       </div>
-    </ThemeProvider>
+    </>
   );
 }

@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import type { Route } from 'next';
 
 export interface IBookPage {
@@ -19,6 +19,7 @@ export interface IBook {
   pageCount?: number;
   url?: Route;
   summary?: React.ReactNode;
+  about?: React.ReactNode;
 }
 
 export class Book implements IBook {
@@ -28,13 +29,15 @@ export class Book implements IBook {
   author?: string;
   url?: Route;
   summary?: React.ReactNode;
+  about?: React.ReactNode;
 
-  constructor (title?: string, author?: string, pages?: IBookPage[], url?: Route, summary?: React.ReactNode) {
+  constructor (title?: string, author?: string, pages?: IBookPage[], url?: Route, summary?: React.ReactNode, about?: React.ReactNode) {
     this.title = title;
     this.author = author;
     this._pages = pages ?? [];
     this.url = url;
     this.summary = summary;
+    this.about = about;
   }
 
   static Create(props: IBook) {
@@ -67,5 +70,8 @@ export class Book implements IBook {
     this.title = book.title;
     this.author = book.author;
     this.pages = book.pages;
+    this.url = book.url;
+    this.summary = book.summary;
+    this.about = book.about;
   }
 }

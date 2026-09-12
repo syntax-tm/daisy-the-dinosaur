@@ -59,7 +59,8 @@ export function buildBook(pages: IBookPage[], pagesPerView: number = 2) {
 
   const coverPage = pages[0];
   const backPage = pages.slice(-1)[0];
-  const inside = pages.slice(1, -1);
+  // const inside = pages.slice(1, -1);
+  const inside = pages.slice(1);
 
   const insidePages: SplitBookPage[] = chunkArray(inside, pagesPerView).map(p => {
     return [p.at(0) ?? null, p.at(1) ?? null]
@@ -68,7 +69,7 @@ export function buildBook(pages: IBookPage[], pagesPerView: number = 2) {
   const splitPages: SplitBookPage[] = [
     [null, coverPage],
     ...insidePages,
-    [backPage, null],
+    // [backPage, null],
   ];
 
   const splitPageProps = splitPages.map((p, i) => {

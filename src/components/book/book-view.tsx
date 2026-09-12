@@ -6,7 +6,7 @@ import { Pagination, Card, IconButton, Avatar } from '@mui/material';
 import { useOrientation } from '@uidotdev/usehooks';
 import { chunkArray } from '@/types/array';
 import { ArrowLeft, ArrowRight } from '@mui/icons-material';
-import { IBookPage } from 'types';
+import { IBook, IBookPage } from 'types';
 import { daisysDayAway } from '@/config/daisys-day-away';
 import { useSwipe, useKeyboard, useWheel, KeyPressAction } from '@hooks/index';
 import './book.css';
@@ -125,7 +125,7 @@ export interface BookViewState {
 export type BookLayout = 'auto' | 'single' | 'dual';
 
 export interface BookViewProps {
-  pages?: IBookPage[];
+  book: IBook;
   layout?: BookLayout;
 }
 
@@ -135,7 +135,7 @@ function parseBookLayout(value: string | null): BookLayout | undefined {
     : undefined;
 }
 
-const BookView = ({ pages = daisysDayAway.pages, layout = 'auto' }: BookViewProps) => {
+const BookView = ({ book, layout = 'auto' }: BookViewProps) => {
 
   const router = useRouter();
   const pathname = usePathname();
@@ -146,7 +146,7 @@ const BookView = ({ pages = daisysDayAway.pages, layout = 'auto' }: BookViewProp
   const navigationLockTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const queryLayout = parseBookLayout(searchParams.get('layout'));
   const activeLayout = queryLayout ?? layout;
-
+  const pages = book.pages;
   const getPpv = useCallback(() => {
     if (activeLayout === 'single') return 1;
     if (activeLayout === 'dual') return 2;
@@ -299,6 +299,7 @@ const BookView = ({ pages = daisysDayAway.pages, layout = 'auto' }: BookViewProp
   if (pagesPerView === 2) {
     innerView = (
       <DualPageView
+        book={book}
         currentPage={currentPage as SplitPageViewProps}
         direction={direction}
         onFlipComplete={() => setDirection(0)}

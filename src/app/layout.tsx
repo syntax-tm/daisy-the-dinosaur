@@ -5,6 +5,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import Providers from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +32,11 @@ export const metadata: Metadata = {
   other: {
     rel: 'preload',
     as: 'image',
-    href: 'docs/daisy_the_dinosaurs_day_away/page-01.png'
+    href: [
+      'docs/daisy_the_dinosaurs_day_away/page-01.png',
+      'docs/daisy_the_dinosaurs_day_away/page-02.png',
+      'docs/daisy_the_dinosaurs_day_away/page-03.png'
+    ]
   }
 };
 
@@ -45,10 +50,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="h-screen w-screen overflow-hidden">
-        {children}
-        {book}
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className="absolute inset-0 overflow-hidden">
+        <Providers>
+          {children}
+          {book}
+        </Providers>
       </body>
     </html>
   );

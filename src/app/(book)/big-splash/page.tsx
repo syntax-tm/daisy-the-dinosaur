@@ -9,6 +9,6 @@ const BookView = dynamic(() => import('@/components/book/book-view'), {
 
 export default function Page() {
   return (
-    <BookView pages={daisysDayAway.pages} />
+    <BookView book={daisysDayAway} />
   );
 }
