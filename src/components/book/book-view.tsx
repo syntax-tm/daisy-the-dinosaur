@@ -135,6 +135,17 @@ function parseBookLayout(value: string | null): BookLayout | undefined {
     : undefined;
 }
 
+function getInitialPagesPerView(layout: BookLayout, orientationType: string) {
+  if (layout === 'single') return 1;
+  if (layout === 'dual') return 2;
+
+  if (typeof window !== 'undefined') {
+    return window.matchMedia('(orientation: landscape)').matches ? 2 : 1;
+  }
+
+  return orientationType.startsWith('landscape') ? 2 : 1;
+}
+
 const BookView = ({ book, layout = 'auto' }: BookViewProps) => {
 
   const router = useRouter();
@@ -160,7 +171,7 @@ const BookView = ({ book, layout = 'auto' }: BookViewProps) => {
   const [allowPrev, setAllowPrev] = useState(false);
   const [allowNext, setAllowNext] = useState(false);
   const [pagesPerView, setPagesPerView] = useState(() => {
-    return getPpv();
+    return getInitialPagesPerView(activeLayout, orientation.type);
   });
   const [content, setContent] = useState<IBookPage[] | SplitPageViewProps[] | null>(() => {
     return buildBook(pages, pagesPerView);
