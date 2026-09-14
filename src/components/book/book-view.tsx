@@ -201,10 +201,10 @@ const BookView = ({ book, layout = 'auto' }: BookViewProps) => {
     setAllowPrev(pageNumber > 1);
     setAllowNext(pageNumber < totalPages);
 
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('page', pageNumber.toString());
+    // const params = new URLSearchParams(searchParams.toString());
+    // params.set('page', pageNumber.toString());
 
-    router.replace(`${pathname}?${params.toString()}`);
+    // router.replace(`${pathname}?${params.toString()}`);
 
   }, [pageNumber, totalPages]);
 
