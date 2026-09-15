@@ -2,6 +2,12 @@
 
 obsidian/
 
+# paint.net project files
+*.pdn
+
+# folders and files starting with _
+**/_*
+
 # dependencies
 /node_modules
 /.pnp
